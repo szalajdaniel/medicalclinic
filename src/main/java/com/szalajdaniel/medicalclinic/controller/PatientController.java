@@ -1,8 +1,9 @@
 package com.szalajdaniel.medicalclinic.controller;
 
-import com.szalajdaniel.medicalclinic.model.dto.CreatePatientRequest;
+import com.szalajdaniel.medicalclinic.model.dto.ChangePasswordDto;
+import com.szalajdaniel.medicalclinic.model.dto.CreatePatientRequestDto;
 import com.szalajdaniel.medicalclinic.model.dto.PatientDto;
-import com.szalajdaniel.medicalclinic.model.entity.Patient;
+import com.szalajdaniel.medicalclinic.model.dto.UpdatePatientDto;
 import com.szalajdaniel.medicalclinic.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,26 +19,35 @@ public class PatientController {
     private final PatientService patientService;
 
     @GetMapping
-    List<Patient> getPatients(){
+    List<PatientDto> getPatients() {
         return patientService.getAllPatients();
     }
+
     @GetMapping("/{email}")
-    public PatientDto getPatientByEmail(@PathVariable String email){
+    public PatientDto getPatientByEmail(@PathVariable String email) {
         return patientService.getPatientByEmail(email);
     }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PatientDto addPatient(@RequestBody CreatePatientRequest createPatientRequest){
-        return patientService.addPatient(createPatientRequest);
+    public PatientDto addPatient(@RequestBody CreatePatientRequestDto createPatientRequestDto) {
+        return patientService.addPatient(createPatientRequestDto);
     }
+
     @DeleteMapping("/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePatient(@PathVariable String email){
+    public void deletePatient(@PathVariable String email) {
         patientService.deletePatientByEmail(email);
     }
-    @PutMapping("/{email}")
-    public PatientDto updatePatient(@PathVariable String email, @RequestBody CreatePatientRequest createPatientRequest){
-       return patientService.updatePatientByEmail(email, createPatientRequest);
 
+    @PutMapping("/{email}")
+    public PatientDto updatePatient(@PathVariable String email, @RequestBody UpdatePatientDto updatePatientDto) {
+        return patientService.updatePatientByEmail(email, updatePatientDto);
+
+    }
+    @PostMapping("/{email}/password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void chaangePassword(@PathVariable String email, @RequestBody ChangePasswordDto changePasswordDto){
+        patientService.changePassword(email, changePasswordDto.password());
     }
 }
