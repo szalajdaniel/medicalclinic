@@ -11,20 +11,16 @@ public class PatientMapper {
 
     public Patient toPatient(CreatePatientRequestDto request) {
         Patient patient = new Patient();
-
         patient.setEmail(request.email());
         patient.setPassword(request.password());
         patient.setIdCardNo(request.idCardNo());
         patient.setLastName(request.lastName());
         patient.setPhoneNumber(request.phoneNumber());
         patient.setBirthday(request.birthday());
-
         return patient;
     }
-    public void updatePatient(
-            Patient patient,
-            UpdatePatientDto updatePatientDto
-    ) {
+
+    public void updatePatient(Patient patient, UpdatePatientDto updatePatientDto) {
         patient.setEmail(updatePatientDto.email());
         patient.setLastName(updatePatientDto.lastName());
         patient.setPhoneNumber(updatePatientDto.phoneNumber());
@@ -32,13 +28,7 @@ public class PatientMapper {
     }
 
     public PatientDto toDto(Patient patient) {
-        return new PatientDto(
-                patient.getPatientId(),
-                patient.getEmail(),
-                patient.getIdCardNo(),
-                patient.getLastName(),
-                patient.getPhoneNumber(),
-                patient.getBirthday()
-        );
+        return new PatientDto(patient.getPatientId(), patient.getEmail(), patient.getIdCardNo(), patient.getLastName(),
+                patient.getPhoneNumber(), patient.getBirthday());
     }
 }
