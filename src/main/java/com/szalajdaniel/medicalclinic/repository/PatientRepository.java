@@ -5,16 +5,17 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class PatientRepository {
-    private final List<Patient> patients = new ArrayList<>();
+    private final List<Patient> patients = Collections.synchronizedList(new ArrayList<>());
     private final AtomicLong idGenerator = new AtomicLong(1);
-    public PatientRepository() {
 
+    public PatientRepository() {
         patients.add(new Patient(
                 idGenerator.getAndIncrement(),
                 "jan.kowalski@gmail.com",
@@ -25,6 +26,7 @@ public class PatientRepository {
                 LocalDate.of(1990, 5, 15)
         ));
     }
+
     public List<Patient> getPatients() {
         return new ArrayList<>(patients);
     }
@@ -35,7 +37,7 @@ public class PatientRepository {
     }
 
     public void deletePatient(String email) {
-        patients.remove(findByEmail(email));
+        patients.removeIf(p -> p.getEmail().equals(email));
     }
 
     public Optional<Patient> findByEmail(String email) {

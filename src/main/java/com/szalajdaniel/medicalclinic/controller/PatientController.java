@@ -13,13 +13,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/patients")
-
 @RequiredArgsConstructor
 public class PatientController {
     private final PatientService patientService;
 
     @GetMapping
-    List<PatientDto> getPatients() {
+    public List<PatientDto> getPatients() {
         return patientService.getAllPatients();
     }
 
@@ -43,8 +42,8 @@ public class PatientController {
     @PutMapping("/{email}")
     public PatientDto updatePatient(@PathVariable String email, @RequestBody UpdatePatientDto updatePatientDto) {
         return patientService.updatePatientByEmail(email, updatePatientDto);
-
     }
+
     @PostMapping("/{email}/password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void chaangePassword(@PathVariable String email, @RequestBody ChangePasswordDto changePasswordDto){
