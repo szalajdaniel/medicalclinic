@@ -16,34 +16,33 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class RewardService {
-
     private final RewardRepository rewardRepository;
-
+    private final RewardMapper rewardMapper;
 
     public List<RewardDto> getRewardsByProgramId(Long programId) {
         return rewardRepository.findByProgramId(programId)
                 .stream()
-                .map(reward -> RewardMapper.toDto(reward, isAvailable(reward)))
+                .map(reward -> rewardMapper.toDto(reward, isAvailable(reward)))
                 .toList();
     }
 
     public RewardDto addReward(Long programId, CreateRewardCommandDto command) {
-        Reward reward = RewardMapper.toReward(command, programId);
+        Reward reward = rewardMapper.toReward(command, programId);
         rewardRepository.addReward(reward);
-        return RewardMapper.toDto(reward, isAvailable(reward)
+        return rewardMapper.toDto(reward, isAvailable(reward)
         );
     }
 
     public RewardDto getRewardById(Long rewardId) {
         Reward reward = findReward(rewardId);
-        return RewardMapper.toDto(reward, isAvailable(reward)
+        return rewardMapper.toDto(reward, isAvailable(reward)
         );
     }
 
     public RewardDto updateReward(Long rewardId, UpdateRewardCommandDto command) {
         Reward reward = findReward(rewardId);
-        RewardMapper.updateReward(reward, command);
-        return RewardMapper.toDto(reward, isAvailable(reward)
+        rewardMapper.updateReward(reward, command);
+        return rewardMapper.toDto(reward, isAvailable(reward)
         );
     }
 
@@ -53,11 +52,8 @@ public class RewardService {
     }
 
     private Reward findReward(Long rewardId) {
-        return rewardRepository.findById(rewardId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "No reward found with the given id"
-                ));
+        return rewardRepository.findById(rewardId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "No reward found with the given id"));
     }
 
     private boolean isAvailable(Reward reward) {

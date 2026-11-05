@@ -18,7 +18,7 @@ public class UserRepository {
     }
 
     public void addUser(User user){
-        user.setUserID(idGenerator.getAndIncrement());
+        user.setUserId(idGenerator.getAndIncrement());
         users.add(user);
     }
 
