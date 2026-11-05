@@ -16,56 +16,44 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PatientService {
     private final PatientRepository repository;
-    private final PatientMapper mapper;
+    private final PatientMapper patientMapper;
 
-    public List<PatientDto> getAllPatients(){
+    public List<PatientDto> getAllPatients() {
         return repository.getPatients().stream()
-                .map(mapper::toDto)
+                .map(patientMapper::toDto)
                 .toList();
     }
 
-    public PatientDto getPatientByEmail(String email){
-        Patient patient = repository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Nie znaleziono pacjenta o danym email"
-                ));
-        return mapper.toDto(patient);
+    public PatientDto getPatientByEmail(String email) {
+        Patient patient = repository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Nie znaleziono pacjenta o danym email"));
+        return patientMapper.toDto(patient);
     }
 
-    public PatientDto addPatient(CreatePatientRequestDto createPatientRequestDto){
-        repository.findByEmail(createPatientRequestDto.email())
-                .ifPresent(patient -> {
-                            throw new ResponseStatusException(HttpStatus.CONFLICT, "Istnieje pacjent o podanym adresie email");
-                        });
-        Patient patient = mapper.toPatient(createPatientRequestDto);
+    public PatientDto addPatient(CreatePatientRequestDto createPatientRequestDto) {
+        repository.findByEmail(createPatientRequestDto.email()).ifPresent(patient -> {
+                            throw new ResponseStatusException(HttpStatus.CONFLICT, "Istnieje pacjent o podanym adresie email");});
+        Patient patient = patientMapper.toPatient(createPatientRequestDto);
         repository.addPatient(patient);
-        return mapper.toDto(patient);
+        return patientMapper.toDto(patient);
     }
 
-    public void deletePatientByEmail(String email){
+    public void deletePatientByEmail(String email) {
         repository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Nie znaleziono pacjenta o danym mailu"));
         repository.deletePatient(email);
     }
 
     public PatientDto updatePatientByEmail(String email, UpdatePatientDto updatePatientDto){
-        Patient patient = repository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(
-                            HttpStatus.NOT_FOUND,
-                            "Nie znaleziono pacjenta o podanym adresie email"
-                    ));
-            mapper.updatePatient(patient, updatePatientDto);
-            return mapper.toDto(patient);
+        Patient patient = repository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                            "Nie znaleziono pacjenta o podanym mailu"));
+            patientMapper.updatePatient(patient, updatePatientDto);
+            return patientMapper.toDto(patient);
     }
 
     public void changePassword(String email, String password){
-        Patient patient = repository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Nie znaleziono pacjenta o podanym mailu"
-                ));
-
+        Patient patient = repository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Nie znaleziono pacjenta o podanym mailu"));
         patient.setPassword(password);
     }
 }

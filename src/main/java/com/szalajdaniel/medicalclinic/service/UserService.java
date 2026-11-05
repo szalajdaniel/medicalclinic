@@ -17,42 +17,33 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository repository;
+    private final UserMapper userMapper;
 
-    public List<UserDto> getAllPatients(){
+    public List<UserDto> getAllPatients() {
         return repository.getUsers().stream()
-                .map(UserMapper::toDto)
+                .map(userMapper::toDto)
                 .toList();
     }
 
-    public UserDto addUser(CreateUserCommandDto createUserCommandDto){
-        repository.findByUsername(createUserCommandDto.username())
-                .ifPresent(user -> {
-                    throw new ResponseStatusException(
-                            HttpStatus.CONFLICT,
-                            "Istnieje już użytkownik o podanym username"
-                    );
-                });
-        User user = UserMapper.toUser(createUserCommandDto);
+    public UserDto addUser(CreateUserCommandDto createUserCommandDto) {
+        repository.findByUsername(createUserCommandDto.username()).ifPresent(user -> {throw new ResponseStatusException
+                (HttpStatus.CONFLICT, "Istnieje już użytkownik o podanym username");
+        });
+        User user = userMapper.toUser(createUserCommandDto);
         repository.addUser(user);
-        return UserMapper.toDto(user);
+        return userMapper.toDto(user);
     }
 
-    public void deleteUserByUsername(String username){
+    public void deleteUserByUsername(String username) {
         repository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Nie znaleziono użytkownika o podanym username"
-                ));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Nie znaleziono użytkownika o podanym username"));
         repository.deleteUser(username);
     }
 
-    public UserDto updateUserByUsername(String username, UpdateUserCommandDto updateUserCommandDto){
-        User user = repository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Nie znaleziono uzytkownika o podanym username"
-                ));
-        UserMapper.updateUser(user, updateUserCommandDto);
-        return UserMapper.toDto(user);
+    public UserDto updateUserByUsername(String username, UpdateUserCommandDto updateUserCommandDto) {
+        User user = repository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Nie znaleziono uzytkownika o podanym username"));
+        userMapper.updateUser(user, updateUserCommandDto);
+        return userMapper.toDto(user);
     }
 }
