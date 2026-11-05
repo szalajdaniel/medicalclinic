@@ -17,7 +17,7 @@ public class UserRepository {
         return new ArrayList<>(users);
     }
 
-    public void addUser(User user){
+    public void addUser(User user) {
         user.setUserId(idGenerator.getAndIncrement());
         users.add(user);
     }

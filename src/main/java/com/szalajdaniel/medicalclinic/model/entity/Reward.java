@@ -22,4 +22,16 @@ public class Reward {
     private LocalDate endDate;
     private boolean active;
     private Integer AvailableQuantity;
+
+    public boolean isAvailable() {
+        LocalDate today = LocalDate.now();
+        boolean active = isActive();
+        boolean afterStart = getStartDate() == null
+                || !today.isBefore(getStartDate());
+        boolean beforeEnd = getEndDate() == null
+                || !today.isAfter(getEndDate());
+        boolean quantityAvailable = getAvailableQuantity() == null
+                || getAvailableQuantity() > 0;
+        return active && afterStart && beforeEnd && quantityAvailable;
+    }
 }

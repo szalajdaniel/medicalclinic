@@ -10,7 +10,6 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface RewardMapper {
-
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "programId", source = "programId")
     Reward toReward(CreateRewardCommandDto command, Long programId);

@@ -44,14 +44,14 @@ public class PatientService {
         repository.deletePatient(email);
     }
 
-    public PatientDto updatePatientByEmail(String email, UpdatePatientDto updatePatientDto){
+    public PatientDto updatePatientByEmail(String email, UpdatePatientDto updatePatientDto) {
         Patient patient = repository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                             "Nie znaleziono pacjenta o podanym mailu"));
             patientMapper.updatePatient(patient, updatePatientDto);
             return patientMapper.toDto(patient);
     }
 
-    public void changePassword(String email, String password){
+    public void changePassword(String email, String password) {
         Patient patient = repository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Nie znaleziono pacjenta o podanym mailu"));
         patient.setPassword(password);

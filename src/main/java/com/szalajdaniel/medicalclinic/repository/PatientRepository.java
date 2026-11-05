@@ -15,18 +15,6 @@ public class PatientRepository {
     private final List<Patient> patients = Collections.synchronizedList(new ArrayList<>());
     private final AtomicLong idGenerator = new AtomicLong(1);
 
-    public PatientRepository() {
-        patients.add(new Patient(
-                idGenerator.getAndIncrement(),
-                "jan.kowalski@gmail.com",
-                "123456",
-                "ABC123456",
-                "Kowalski",
-                "500600700",
-                LocalDate.of(1990, 5, 15)
-        ));
-    }
-
     public List<Patient> getPatients() {
         return new ArrayList<>(patients);
     }
