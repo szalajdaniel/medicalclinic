@@ -33,4 +33,10 @@ public class PatientRepository {
                 .filter(patient -> patient.getEmail().equals(email))
                 .findFirst();
     }
+    public Optional<Patient> findByIdCardNo(String findByIdCardNo) {
+        return patients.stream()
+                .filter(patient -> patient.getIdCardNo().equals(findByIdCardNo))
+                .findFirst();
+    }
+
 }
