@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(MedicalClinicException.class)
     public ResponseEntity <ErrorMessageDto> handleMedicalException(MedicalClinicException medicalClinicException){
         ErrorMessageDto errorMessageDto = new ErrorMessageDto(medicalClinicException.getMessage(), medicalClinicException.getHttpStatus());

@@ -6,5 +6,6 @@ public record UpdatePatientDto(
         String email,
         String lastName,
         String phoneNumber,
-        LocalDate birthday
+        LocalDate birthday,
+        Long userId
 ) {}

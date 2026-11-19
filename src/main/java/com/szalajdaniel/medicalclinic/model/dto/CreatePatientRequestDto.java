@@ -8,5 +8,6 @@ public record CreatePatientRequestDto(
         String idCardNo,
         String lastName,
         String phoneNumber,
-        LocalDate birthday
+        LocalDate birthday,
+        Long userId
 ) {}
