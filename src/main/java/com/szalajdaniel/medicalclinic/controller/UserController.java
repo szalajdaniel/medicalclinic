@@ -20,7 +20,7 @@ public class UserController {
     @GetMapping
     public List<UserDto> getUsers() {
         log.info("GET /users - request received");
-        List<UserDto> users = userService.getAllPatients();
+        List<UserDto> users = userService.getAllUsers();
         log.info("GET /users - responding with HTTP 200 OK, users returned: {}", users.size());
         return users;
     }

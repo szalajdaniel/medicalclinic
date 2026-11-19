@@ -19,7 +19,7 @@ public class UserService {
     private final UserRepository repository;
     private final UserMapper userMapper;
 
-    public List<UserDto> getAllPatients() {
+    public List<UserDto> getAllUsers() {
         return repository.findAll().stream()
                 .map(userMapper::toDto)
                 .toList();
@@ -27,7 +27,7 @@ public class UserService {
 
     public UserDto addUser(CreateUserCommandDto createUserCommandDto) {
         repository.findByUsername(createUserCommandDto.username())
-                .ifPresent(user -> { throw new ResponseStatusException(HttpStatus.CONFLICT, "Istnieje już użytkownik o podanym username");});
+                .ifPresent(user -> { throw new ResponseStatusException(HttpStatus.CONFLICT, "User with userna " + createUserCommandDto.username() + " already exists");});
         User user = userMapper.toUser(createUserCommandDto);
         repository.save(user);
         return userMapper.toDto(user);
@@ -36,14 +36,14 @@ public class UserService {
     @Transactional
     public void deleteUserByUsername(String username) {
         repository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Nie znaleziono użytkownika o podanym username"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with username " + username + " already exists"));
         repository.deleteByUsername(username);
     }
 
     @Transactional
     public UserDto updateUserByUsername(String username, UpdateUserCommandDto updateUserCommandDto) {
-        User user = repository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Nie znaleziono uzytkownika o podanym username"));
+        User user = repository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with username " + username + " already exists"));
         userMapper.updateUser(user, updateUserCommandDto);
         return userMapper.toDto(user);
     }
