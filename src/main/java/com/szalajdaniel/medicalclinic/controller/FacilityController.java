@@ -29,7 +29,7 @@ public class FacilityController {
     public FacilityDto addFacility(@RequestBody CreateFacilityDto dto) {
         log.info("POST /facilities - request received");
         FacilityDto created = facilityService.addFacility(dto);
-        log.info("POST /facilities - responding with HTTP 201 CREATED, facilityId: {}", created.facilityId());
+        log.info("POST /facilities - responding with HTTP 201 CREATED, facilityId: {}", created.id());
         return created;
     }
 }

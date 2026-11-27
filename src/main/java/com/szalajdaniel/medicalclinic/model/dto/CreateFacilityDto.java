@@ -5,6 +5,6 @@ public record CreateFacilityDto(
         String city,
         String zipCode,
         String street,
-        String buildingNumber)
-{}
+        String buildingNumber
+) {}
 

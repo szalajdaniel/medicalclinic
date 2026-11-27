@@ -2,10 +2,9 @@ package com.szalajdaniel.medicalclinic.model.dto;
 
 import java.time.LocalDate;
 
-public record UpdatePatientDto(
+public record UpdatePatientCommandDto(
         String email,
         String lastName,
         String phoneNumber,
-        LocalDate birthday,
-        Long userId
+        LocalDate birthday
 ) {}

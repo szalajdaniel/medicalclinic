@@ -20,33 +20,36 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class DoctorService {
-    private final DoctorRepository repository;
+    private final DoctorRepository doctorRepository;
     private final FacilityRepository facilityRepository;
     private final DoctorMapper mapper;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<DoctorDto> getAllDoctors() {
-        return repository.findAll().stream().map(mapper::toDto).toList();
+        return doctorRepository.findAll().stream()
+                .map(mapper::toDto)
+                .toList();
     }
 
-    @Transactional
     public DoctorDto addDoctor(CreateDoctorDto dto) {
         log.info("Attempting to add doctor with email: {}", dto.email());
-        repository.findByEmail(dto.email())
+        doctorRepository.findByEmail(dto.email())
                 .ifPresent(d -> { throw new DoctorAlreadyExistsException("Doctor with email " + dto.email() + " already exists");
         });
         Doctor doctor = mapper.toDoctor(dto);
-        repository.save(doctor);
+        doctorRepository.save(doctor);
         return mapper.toDto(doctor);
     }
 
     @Transactional
     public DoctorDto assignToFacility(String email, Long facilityId) {
         log.info("Attempting to assign doctor {} to facility {}", email, facilityId);
-        Doctor doctor = repository.findByEmail(email)
+        Doctor doctor = doctorRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundDoctorException("Doctor with email " + email + " not found"));
-        Facility facility = facilityRepository.findById(facilityId).orElseThrow(() -> new NotFoundFacilityException("Facility with id " + facilityId + " not found"));
-        doctor.getFacilities().add(facility);
+        Facility facility = facilityRepository.findById(facilityId)
+                .orElseThrow(() -> new NotFoundFacilityException("Facility with id " + facilityId + " not found"));
+        doctor.addFacility(facility);
+        doctorRepository.save(doctor);
         return mapper.toDto(doctor);
     }
 }

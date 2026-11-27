@@ -3,7 +3,7 @@ package com.szalajdaniel.medicalclinic.model.dto;
 import java.time.LocalDate;
 
 public record PatientDto(
-        Long patientId,
+        Long id,
         String email,
         String idCardNo,
         String lastName,

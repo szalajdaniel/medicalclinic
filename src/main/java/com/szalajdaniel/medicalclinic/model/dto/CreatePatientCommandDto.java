@@ -1,13 +1,14 @@
 package com.szalajdaniel.medicalclinic.model.dto;
 
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-public record CreatePatientRequestDto(
+public record CreatePatientCommandDto(
         String email,
         String password,
         String idCardNo,
         String lastName,
         String phoneNumber,
         LocalDate birthday,
-        Long userId
+        @NotNull Long userId
 ) {}

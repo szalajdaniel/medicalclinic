@@ -3,7 +3,7 @@ package com.szalajdaniel.medicalclinic.model.dto;
 import java.util.Set;
 
 public record DoctorDto(
-        Long doctorId,
+        Long id,
         String email,
         String firstName,
         String lastName,

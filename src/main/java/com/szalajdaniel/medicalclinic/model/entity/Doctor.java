@@ -18,7 +18,8 @@ import java.util.Set;
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long doctorId;
+    private Long id;
+
     @Column(unique = true, nullable = false)
     private String email;
     private String password;
@@ -33,4 +34,27 @@ public class Doctor {
             inverseJoinColumns = @JoinColumn(name = "facility_id")
     )
     private Set<Facility> facilities = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Doctor)) return false;
+        Doctor other = (Doctor) o;
+        return id != null && id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    public void addFacility(Facility facility) {
+        this.facilities.add(facility);
+        facility.getDoctors().add(this);
+    }
+
+    public void removeFacility(Facility facility) {
+        this.facilities.remove(facility);
+        facility.getDoctors().remove(this);
+    }
 }

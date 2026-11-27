@@ -1,7 +1,7 @@
 package com.szalajdaniel.medicalclinic.model.dto;
 
 public record UserDto(
-        Long userId,
+        Long id,
         String username
 ) {
 }

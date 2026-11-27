@@ -30,7 +30,7 @@ public class DoctorController {
     public DoctorDto addDoctor(@RequestBody CreateDoctorDto dto) {
         log.info("POST /doctors - request received");
         DoctorDto created = doctorService.addDoctor(dto);
-        log.info("POST /doctors - responding with HTTP 201 CREATED, doctorId: {}", created.doctorId());
+        log.info("POST /doctors - responding with HTTP 201 CREATED, doctorId: {}", created.id());
         return created;
     }
 

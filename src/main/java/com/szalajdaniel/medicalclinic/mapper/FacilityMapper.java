@@ -8,7 +8,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface FacilityMapper {
-    @Mapping(target = "facilityId", ignore = true)
+
+    @Mapping(target = "id", ignore = true)
     Facility toFacility(CreateFacilityDto dto);
     FacilityDto toDto(Facility facility);
 }

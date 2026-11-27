@@ -1,11 +1,11 @@
 package com.szalajdaniel.medicalclinic.model.dto;
 
 public record FacilityDto(
-        Long facilityId,
+        Long id,
         String name,
         String city,
         String zipCode,
         String street,
-        String buildingNumber)
-{}
+        String buildingNumber
+) {}
 
